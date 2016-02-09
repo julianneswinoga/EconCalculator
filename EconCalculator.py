@@ -128,11 +128,10 @@ class EngEconWindow:
         self.builder.get_object("Txt_VarN").set_text("")
         self.builder.get_object("Txt_VarA").set_text("")
         self.builder.get_object("Txt_Varg").set_text("")
-        
         currFormula.clearAll() 
-        print "Clear Variables"
+        print "Cleared Variables"
+        
     def on_window1_destroy(self, object, data=None):
-        print "Quit with cancel"
         gtk.main_quit()
         
 
