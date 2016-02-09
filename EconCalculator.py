@@ -24,10 +24,15 @@ class Formula:
         self.N = ""
         self.r = ""
         self.m = ""
+        self.k = ""
         self.A = ""
+        self.g = ""
         self.formulaText = ""
 
     def parseVariable(self, var, varStr):
+        if (self.formulaText.find(varStr) != -1):
+            if (self.formulaText.find(varStr)+2 < len(self.formulaText) and self.formulaText[self.formulaText.find(varStr)+1] == "_" and varStr[1] != "_"):
+                return
         try:
             if (var[-1] == "%"):
                 var = float(var[0:len(var)-1])/100.0
@@ -41,14 +46,22 @@ class Formula:
         self.formulaText = self.formulaText.replace(varStr, str(var)) # Replace all the variables with whatever happened above (float or text)
         if (self.formulaText.find(varStr) != -1): # If we can still find the variable, we need to iterate again
             self.parseAgain = True
-        
-    def parseFormula(self):
+
+    def replaceFormulas(self):
         self.formulaText = self.formulaText.replace("(F/P)", "((1+i)^N)")
         self.formulaText = self.formulaText.replace("(P/F)", "(1/((1+i)^N))")
         self.formulaText = self.formulaText.replace("(A/F)", "(1/(((1+i)^N)-1))")
         self.formulaText = self.formulaText.replace("(F/A)", "(((1+i)^N-1)/i)")
         self.formulaText = self.formulaText.replace("(A/P)", "((i*(1+i)^N)/((1+i)^N-1))")
-
+        self.formulaText = self.formulaText.replace("(P/A)", "(((1+i)^N-1)/(i*(1+i)^N))")
+        self.formulaText = self.formulaText.replace("(A/G)", "((1/i)-(N/((1+i)^N-1)))")
+        self.formulaText = self.formulaText.replace("(P/A,g)", "((((1+(i_0))^N-1)/((i_0)*(1+(i_0))^N))*(1/(1+g)))")
+        self.formulaText = self.formulaText.replace("(i_0)", "(((1+i)/(1+g))-1)")
+        self.formulaText = self.formulaText.replace("(i_e)", "((1+(r/m))^k-1)")
+        
+    def parseFormula(self):
+        self.replaceFormulas()
+        
         self.parseAgain = True
         preFormula = ""
         while (self.parseAgain and preFormula != self.formulaText):
@@ -58,8 +71,11 @@ class Formula:
             self.parseVariable(self.i, "i")
             self.parseVariable(self.r, "r")
             self.parseVariable(self.m, "m")
+            self.parseVariable(self.k, "k")
             self.parseVariable(self.N, "N")
-            self.parseVariable(self.N, "A")
+            self.parseVariable(self.A, "A")
+            self.parseVariable(self.g, "g")
+            self.replaceFormulas()
             print preFormula + " -> " + self.formulaText
 
         try:
@@ -89,8 +105,10 @@ class EngEconWindow:
         currFormula.i = self.builder.get_object("Txt_Vari").get_text()
         currFormula.r = self.builder.get_object("Txt_Varr").get_text()
         currFormula.m = self.builder.get_object("Txt_Varm").get_text()
+        currFormula.k = self.builder.get_object("Txt_Vark").get_text()
         currFormula.N = self.builder.get_object("Txt_VarN").get_text()
         currFormula.A = self.builder.get_object("Txt_VarA").get_text()
+        currFormula.g = self.builder.get_object("Txt_Varg").get_text()
         
         currFormula.formulaText = self.builder.get_object("FormulaInput").get_text()
         self.builder.get_object("FormulaOutput").set_text(currFormula.formulaText+"="+currFormula.parseFormula())
@@ -98,7 +116,12 @@ class EngEconWindow:
     def on_BttnClearVars_clicked(self, object, data=None):
         self.builder.get_object("Txt_VarP").set_text("")
         self.builder.get_object("Txt_Vari").set_text("")
+        self.builder.get_object("Txt_Varr").set_text("")
+        self.builder.get_object("Txt_Varm").set_text("")
+        self.builder.get_object("Txt_Vark").set_text("")
         self.builder.get_object("Txt_VarN").set_text("")
+        self.builder.get_object("Txt_VarA").set_text("")
+        self.builder.get_object("Txt_Varg").set_text("")
         
         currFormula.clearAll() 
         print "Clear Variables"
