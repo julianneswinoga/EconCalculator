@@ -30,9 +30,12 @@ class Formula:
         self.formulaText = ""
 
     def parseVariable(self, var, varStr):
-        if (self.formulaText.find(varStr) != -1):
-            if (self.formulaText.find(varStr)+2 < len(self.formulaText) and self.formulaText[self.formulaText.find(varStr)+1] == "_" and varStr[1] != "_"):
-                return
+        if (self.formulaText.find(varStr) != -1 and varStr == "i"):
+            try:
+                if (self.formulaText[self.formulaText.find(varStr)+1] == "_"):
+                    return
+            except:
+                pass
         try:
             if (var[-1] == "%"):
                 var = float(var[0:len(var)-1])/100.0
@@ -87,7 +90,10 @@ class Formula:
                 print "Evaluated: " + str(rtn)
             except:
                 print "Could not evaluate"
-        return str(rtn)
+        try:
+            return str(rtn)
+        except:
+            return "Error parsing formula!"
 
 currFormula = Formula()
 
