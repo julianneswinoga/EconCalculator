@@ -203,6 +203,37 @@ class EngEconWindow:
 
     def on_Bttn_GithubLink_clicked(self, object, data=None):
         webbrowser.open("https://github.com/camca123/EconCalculator")
+
+    def saveGeneric(self, equationNumber):
+        f = open("formula" + str(equationNumber), "w")
+        f.write(self.builder.get_object("FormulaInput").get_text())
+        f.close()
+
+    def loadGeneric(self, equationNumber):
+        if (self.builder.get_object("FormulaInput").get_text() == ""): #Only overwrite if the formula box is empty
+            f = open("formula" + str(equationNumber), "r")
+            self.builder.get_object("FormulaInput").set_text(f.read())
+            f.close()
+        else:
+            pass
+            
+    def on_Bttn_Save1_clicked(self, object, data=None):
+        self.saveGeneric(1)
+    def on_Bttn_Save2_clicked(self, object, data=None):
+        self.saveGeneric(2)
+    def on_Bttn_Save3_clicked(self, object, data=None):
+        self.saveGeneric(3)
+    def on_Bttn_Save4_clicked(self, object, data=None):
+        self.saveGeneric(4)
+
+    def on_Bttn_Load1_clicked(self, object, data=None):
+        self.loadGeneric(1)
+    def on_Bttn_Load2_clicked(self, object, data=None):
+        self.loadGeneric(2)
+    def on_Bttn_Load3_clicked(self, object, data=None):
+        self.loadGeneric(3)
+    def on_Bttn_Load4_clicked(self, object, data=None):
+        self.loadGeneric(4)
         
     def on_window1_destroy(self, object, data=None):
         gtk.main_quit()

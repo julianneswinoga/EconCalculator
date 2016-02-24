@@ -586,6 +586,7 @@ k = # compounding periods/cash flow period</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <signal name="clicked" handler="on_Bttn_Load1_clicked" swapped="no"/>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
@@ -598,6 +599,7 @@ k = # compounding periods/cash flow period</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <signal name="clicked" handler="on_Bttn_Load2_clicked" swapped="no"/>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
@@ -612,6 +614,7 @@ k = # compounding periods/cash flow period</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <signal name="clicked" handler="on_Bttn_Load3_clicked" swapped="no"/>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
@@ -626,6 +629,7 @@ k = # compounding periods/cash flow period</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <signal name="clicked" handler="on_Bttn_Load4_clicked" swapped="no"/>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
@@ -640,6 +644,7 @@ k = # compounding periods/cash flow period</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <signal name="clicked" handler="on_Bttn_Save1_clicked" swapped="no"/>
                           </object>
                         </child>
                         <child>
@@ -648,6 +653,7 @@ k = # compounding periods/cash flow period</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <signal name="clicked" handler="on_Bttn_Save2_clicked" swapped="no"/>
                           </object>
                           <packing>
                             <property name="top_attach">1</property>
@@ -660,6 +666,7 @@ k = # compounding periods/cash flow period</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <signal name="clicked" handler="on_Bttn_Save3_clicked" swapped="no"/>
                           </object>
                           <packing>
                             <property name="top_attach">2</property>
@@ -672,6 +679,7 @@ k = # compounding periods/cash flow period</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <signal name="clicked" handler="on_Bttn_Save4_clicked" swapped="no"/>
                           </object>
                           <packing>
                             <property name="top_attach">3</property>
