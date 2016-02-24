@@ -1,4 +1,4 @@
-import sys
+import sys, webbrowser
 from py_expression_eval import Parser
 try:
     import pygtk
@@ -200,6 +200,9 @@ class EngEconWindow:
 
     def on_Bttn_Eq_i_e_clicked(self, object, data=None):
         self.formulaButtonClicked("(i_e, r, m, k)")
+
+    def on_Bttn_GithubLink_clicked(self, object, data=None):
+        webbrowser.open("https://github.com/camca123/EconCalculator")
         
     def on_window1_destroy(self, object, data=None):
         gtk.main_quit()

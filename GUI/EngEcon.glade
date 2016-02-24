@@ -331,6 +331,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <property name="tooltip_text" translatable="yes">Compound Interest</property>
                             <property name="image">Img_Eq_FP</property>
                             <signal name="clicked" handler="on_Bttn_Eq_FP_clicked" swapped="no"/>
                           </object>
@@ -346,6 +347,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <property name="tooltip_text" translatable="yes">Present Worth</property>
                             <property name="image">Img_Eq_PF</property>
                             <signal name="clicked" handler="on_Bttn_Eq_PF_clicked" swapped="no"/>
                           </object>
@@ -361,6 +363,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <property name="tooltip_text" translatable="yes">Sinking Fund</property>
                             <property name="image">Img_Eq_AF</property>
                             <signal name="clicked" handler="on_Bttn_Eq_AF_clicked" swapped="no"/>
                           </object>
@@ -376,6 +379,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <property name="tooltip_text" translatable="yes">Compound Amount</property>
                             <property name="image">Img_Eq_FA</property>
                             <signal name="clicked" handler="on_Bttn_Eq_FA_clicked" swapped="no"/>
                           </object>
@@ -391,6 +395,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <property name="tooltip_text" translatable="yes">Capital Recovery</property>
                             <property name="image">Img_Eq_AP</property>
                             <signal name="clicked" handler="on_Bttn_Eq_AP_clicked" swapped="no"/>
                           </object>
@@ -406,6 +411,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <property name="tooltip_text" translatable="yes">Series Present Worth</property>
                             <property name="image">Img_Eq_PA</property>
                             <signal name="clicked" handler="on_Bttn_Eq_PA_clicked" swapped="no"/>
                           </object>
@@ -421,6 +427,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <property name="tooltip_text" translatable="yes">Arithmetic Gradient</property>
                             <property name="image">Img_Eq_AG</property>
                             <signal name="clicked" handler="on_Bttn_Eq_AG_clicked" swapped="no"/>
                           </object>
@@ -436,6 +443,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <property name="tooltip_text" translatable="yes">Geometric Gradient</property>
                             <property name="image">Img_Eq_PAg</property>
                             <signal name="clicked" handler="on_Bttn_Eq_PAg_clicked" swapped="no"/>
                           </object>
@@ -466,6 +474,10 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
+                            <property name="tooltip_text" translatable="yes">Effective Interest Rate
+r = Nominal Interest Rate
+m = # compounding periods/year
+k = # compounding periods/cash flow period</property>
                             <property name="image">Img_Eq_i_e</property>
                             <signal name="clicked" handler="on_Bttn_Eq_i_e_clicked" swapped="no"/>
                           </object>
@@ -744,14 +756,13 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLinkButton" id="linkbutton_GitHub">
-                <property name="label" translatable="yes">Github</property>
+              <object class="GtkButton" id="Bttn_GithubLink">
+                <property name="label" translatable="yes">Github Link</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="has_tooltip">True</property>
-                <property name="relief">none</property>
-                <property name="uri">http://www.google.com</property>
+                <property name="use_underline">True</property>
+                <signal name="clicked" handler="on_Bttn_GithubLink_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">True</property>
