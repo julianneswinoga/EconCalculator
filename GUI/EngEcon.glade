@@ -27,9 +27,10 @@
     <property name="can_focus">False</property>
     <property name="pixbuf">Eq_FP.png</property>
   </object>
-  <object class="GtkWindow" id="window1">
+  <object class="GtkWindow" id="window_main">
     <property name="can_focus">False</property>
-    <signal name="destroy" handler="on_window1_destroy" swapped="no"/>
+    <property name="title" translatable="yes">Engineering Economics Calculator</property>
+    <signal name="destroy" handler="on_window_main_destroy" swapped="no"/>
     <child>
       <object class="GtkVBox" id="vbox1">
         <property name="visible">True</property>

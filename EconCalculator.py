@@ -116,12 +116,19 @@ class EngEconWindow:
         self.builder = gtk.Builder()
         self.builder.add_from_file(self.gladefile)
         self.builder.connect_signals(self)
-        self.window = self.builder.get_object("window1")
+        self.window = self.builder.get_object("window_main")
         self.scaleImages(0.15)
         self.window.show()
-        
+        self.initDialog()
         settings = gtk.settings_get_default()
         settings.props.gtk_button_images = True
+
+    def initDialog(self):
+        self.dialog = gtk.MessageDialog(None, 
+                                        gtk.DIALOG_DESTROY_WITH_PARENT,
+                                        gtk.MESSAGE_ERROR, 
+                                        gtk.BUTTONS_YES_NO,
+                                        "Are you sure you want to overwrite your current equation?")
 
     def scaleImage(self, scale, fileName):
         pixbuf = gtk.gdk.pixbuf_new_from_file("GUI/" + fileName + ".png")
@@ -215,7 +222,14 @@ class EngEconWindow:
             self.builder.get_object("FormulaInput").set_text(f.read())
             f.close()
         else:
-            pass
+            response = self.dialog.run()
+            if (response == -8 or response == -9 or response == -1):
+                self.dialog.destroy()
+                self.initDialog()
+            if (response == -8): # The user wants to overwrite
+                f = open("formula" + str(equationNumber), "r")
+                self.builder.get_object("FormulaInput").set_text(f.read())
+                f.close()
             
     def on_Bttn_Save1_clicked(self, object, data=None):
         self.saveGeneric(1)
@@ -234,8 +248,9 @@ class EngEconWindow:
         self.loadGeneric(3)
     def on_Bttn_Load4_clicked(self, object, data=None):
         self.loadGeneric(4)
+
         
-    def on_window1_destroy(self, object, data=None):
+    def on_window_main_destroy(self, object, data=None):
         gtk.main_quit()
         
 def isCharInString(char, string):
