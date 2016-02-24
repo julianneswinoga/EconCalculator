@@ -49,24 +49,38 @@ class Formula:
         self.formulaText = self.formulaText.replace(varStr, str(var)) # Replace all the variables with whatever happened above (float or text)
         if (self.formulaText.find(varStr) != -1): # If we can still find the variable, we need to iterate again
             self.parseAgain = True
+            
+    def evaluateFormula(self, equationNotation, actualEquation):        
+        start = self.formulaText.find("(" + equationNotation)
+        if (start == -1):
+            return
+        end = self.formulaText.find(")", start)        
+        args = self.formulaText[start:end].split(",")
 
+        self.formulaText = self.formulaText[:start] + actualEquation + self.formulaText[end+1:]
+        
+        for a, arg in enumerate(args[1:]): #Skip the first element because it's the equation
+            self.formulaText = self.formulaText.replace("arg_"+str(a+1), str(arg).strip())
+            print "Replaced arg_"+str(a+1)+" with "+str(arg)
+    
     def replaceFormulas(self):
-        self.formulaText = self.formulaText.replace("(F/P)", "((1+i)^N)")
-        self.formulaText = self.formulaText.replace("(P/F)", "(1/((1+i)^N))")
-        self.formulaText = self.formulaText.replace("(A/F)", "(1/(((1+i)^N)-1))")
-        self.formulaText = self.formulaText.replace("(F/A)", "(((1+i)^N-1)/i)")
-        self.formulaText = self.formulaText.replace("(A/P)", "((i*(1+i)^N)/((1+i)^N-1))")
-        self.formulaText = self.formulaText.replace("(P/A)", "(((1+i)^N-1)/(i*(1+i)^N))")
-        self.formulaText = self.formulaText.replace("(A/G)", "((1/i)-(N/((1+i)^N-1)))")
-        self.formulaText = self.formulaText.replace("(P/A,g)", "((((1+(i_0))^N-1)/((i_0)*(1+(i_0))^N))*(1/(1+g)))")
-        self.formulaText = self.formulaText.replace("(i_0)", "(((1+i)/(1+g))-1)")
-        self.formulaText = self.formulaText.replace("(i_e)", "((1+(r/m))^k-1)")
+        self.evaluateFormula("i_0", "(((1+arg_1)/(1+arg_2))-1)")
+        self.evaluateFormula("i_e", "((1+(arg_1/arg_2))^arg_3-1)")
+        
+        self.evaluateFormula("F/P", "((1+arg_1)^arg_2)")
+        self.evaluateFormula("P/F", "(1/((1+arg_1)^arg_2))")
+        self.evaluateFormula("A/F", "(1/(((1+arg_1)^arg_1)-1))")
+        self.evaluateFormula("F/A", "(((1+arg_1)^arg_2-1)/arg_1)")
+        self.evaluateFormula("A/P", "((arg_1*(1+arg_1)^arg_2)/((1+arg_1)^arg_2-1))")
+        self.evaluateFormula("P/A", "(((1+arg_1)^arg_2-1)/(arg_1*(1+arg_1)^arg_2))")
+        self.evaluateFormula("A/G", "((1/arg_1)-(arg_2/((1+arg_1)^arg_2-1)))")
+        self.evaluateFormula("P/A", "((((1+(i_0))^arg_3-1)/((i_0)*(1+(i_0))^arg_3))*(1/(1+arg_1)))")
         
     def parseFormula(self):
+        preFormula = self.formulaText
         self.replaceFormulas()
         
         self.parseAgain = True
-        preFormula = ""
         while (self.parseAgain and preFormula != self.formulaText):
             preFormula = self.formulaText
             self.parseAgain = False
@@ -78,13 +92,12 @@ class Formula:
             self.parseVariable(self.N, "N")
             self.parseVariable(self.A, "A")
             self.parseVariable(self.g, "g")
-            self.replaceFormulas()
             print preFormula + " -> " + self.formulaText
 
         try:
             rtn = parser.parse(self.formulaText).simplify({}).toString()
-            print "Could not simplify"
         except:
+            print "Could not simplify"
             try:
                 rtn = parser.parse(self.formulaText).evaluate({})
                 print "Evaluated: " + str(rtn)
@@ -93,9 +106,9 @@ class Formula:
         try:
             return str(rtn)
         except:
-            return "Error parsing formula!"
+            return "Error parsing formula (" + self.formulaText + ")"
 
-currFormula = Formula()
+currFormula = Formula() # Create instance of formula class
 
 class EngEconWindow:
     def __init__(self):
@@ -104,7 +117,30 @@ class EngEconWindow:
         self.builder.add_from_file(self.gladefile)
         self.builder.connect_signals(self)
         self.window = self.builder.get_object("window1")
+        self.scaleImages(0.15)
         self.window.show()
+        
+        settings = gtk.settings_get_default()
+        settings.props.gtk_button_images = True
+
+    def scaleImage(self, scale, fileName):
+        pixbuf = gtk.gdk.pixbuf_new_from_file("GUI/" + fileName + ".png")
+        scaled_buf = pixbuf.scale_simple(int(pixbuf.get_width()*scale), int(pixbuf.get_height()*scale), gtk.gdk.INTERP_BILINEAR)
+        self.builder.get_object("Img_" + fileName).set_from_pixbuf(scaled_buf)
+        self.builder.get_object("Bttn_" + fileName).set_image(self.builder.get_object("Img_" + fileName))
+        self.builder.get_object("Bttn_" + fileName).set_label("")
+
+    def scaleImages(self, scale):
+        imgFilenames = ["Eq_PF", "Eq_FP", "Eq_AF", "Eq_FA", "Eq_AP", "Eq_PA", "Eq_AG", "Eq_PAg", "Eq_i_0", "Eq_i_e"]
+        for imgName in imgFilenames:
+            self.scaleImage(scale, imgName)
+    def formulaButtonClicked(self, equation):
+        textBox = self.builder.get_object("FormulaInput").get_text()
+        formula = equation
+        if (textBox != ""):
+            self.builder.get_object("FormulaInput").set_text(textBox + (formula if isCharInString(textBox[-1], "+-*/^") else "+" + formula))
+        else:
+            self.builder.get_object("FormulaInput").set_text(formula)
 
     def on_BttnGenFormula_clicked(self, object, data=None):
         currFormula.P = self.builder.get_object("Txt_VarP").get_text()
@@ -129,11 +165,50 @@ class EngEconWindow:
         self.builder.get_object("Txt_VarA").set_text("")
         self.builder.get_object("Txt_Varg").set_text("")
         currFormula.clearAll() 
-        print "Cleared Variables"
+        print "Variables Cleared"
+
+    def on_BttnClearFormula_clicked(self, object, data=None):
+        self.builder.get_object("FormulaInput").set_text("")
+        print "Formula cleared"
+
+    def on_Bttn_Eq_FP_clicked(self, object, data=None):
+        self.formulaButtonClicked("(F/P, i, N)")
+
+    def on_Bttn_Eq_PF_clicked(self, object, data=None):
+        self.formulaButtonClicked("(P/F, i, N)")
+
+    def on_Bttn_Eq_AF_clicked(self, object, data=None):
+        self.formulaButtonClicked("(A/F, i, N)")
+
+    def on_Bttn_Eq_FA_clicked(self, object, data=None):
+        self.formulaButtonClicked("(F/A, i, N)")
+
+    def on_Bttn_Eq_AP_clicked(self, object, data=None):
+        self.formulaButtonClicked("(A/P, i, N)")
+
+    def on_Bttn_Eq_PA_clicked(self, object, data=None):
+        self.formulaButtonClicked("(P/A, i, N)")
+
+    def on_Bttn_Eq_AG_clicked(self, object, data=None):
+        self.formulaButtonClicked("(A/G, i, N)")
+
+    def on_Bttn_Eq_PAg_clicked(self, object, data=None):
+        self.formulaButtonClicked("(P/A, g, i, N)")
+
+    def on_Bttn_Eq_i_0_clicked(self, object, data=None):
+        self.formulaButtonClicked("(i_0, i, g)")
+
+    def on_Bttn_Eq_i_e_clicked(self, object, data=None):
+        self.formulaButtonClicked("(i_e, r, m, k)")
         
     def on_window1_destroy(self, object, data=None):
         gtk.main_quit()
         
+def isCharInString(char, string):
+    for c in string:
+        if (char == c):
+            return True
+    return False
 
 if __name__ == "__main__":
   main = EngEconWindow()

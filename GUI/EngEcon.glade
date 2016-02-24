@@ -2,7 +2,31 @@
 <interface>
   <requires lib="gtk+" version="2.24"/>
   <!-- interface-naming-policy project-wide -->
-  <object class="GtkListStore" id="liststore1"/>
+  <object class="GtkImage" id="Img_Eq_AF">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">Eq_AF.png</property>
+  </object>
+  <object class="GtkImage" id="Img_Eq_AG">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">Eq_AG.png</property>
+  </object>
+  <object class="GtkImage" id="Img_Eq_AP">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">Eq_AP.png</property>
+  </object>
+  <object class="GtkImage" id="Img_Eq_FA">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">Eq_FA.png</property>
+  </object>
+  <object class="GtkImage" id="Img_Eq_FP">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">Eq_FP.png</property>
+  </object>
   <object class="GtkWindow" id="window1">
     <property name="can_focus">False</property>
     <signal name="destroy" handler="on_window1_destroy" swapped="no"/>
@@ -29,15 +53,6 @@
                         <property name="can_focus">False</property>
                         <property name="n_rows">10</property>
                         <property name="n_columns">2</property>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
                         <child>
                           <object class="GtkLabel" id="LblP">
                             <property name="visible">True</property>
@@ -99,8 +114,6 @@
                             <signal name="clicked" handler="on_BttnClearVars_clicked" swapped="no"/>
                           </object>
                           <packing>
-                            <property name="left_attach">1</property>
-                            <property name="right_attach">2</property>
                             <property name="top_attach">9</property>
                             <property name="bottom_attach">10</property>
                           </packing>
@@ -279,6 +292,27 @@
                             <property name="bottom_attach">5</property>
                           </packing>
                         </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="BttnClearFormula">
+                            <property name="label" translatable="yes">Clear Formula</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <signal name="clicked" handler="on_BttnClearFormula_clicked" swapped="no"/>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="right_attach">2</property>
+                            <property name="top_attach">9</property>
+                            <property name="bottom_attach">10</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
                       </object>
                       <packing>
                         <property name="expand">True</property>
@@ -292,14 +326,13 @@
                         <property name="can_focus">False</property>
                         <property name="spacing">2</property>
                         <child>
-                          <object class="GtkLabel" id="Lbl_Eqi_e">
+                          <object class="GtkButton" id="Bttn_Eq_FP">
+                            <property name="label" translatable="yes">Bttn_Eq_FP</property>
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Effective Interest:
-r = Nominal Interest Rate
-m = # compounding periods/year
-k = # compounding periods/cash flow period</property>
-                            <property name="label" translatable="yes">(i_e) = ((1+(r/m))^k - 1)-&gt; (i_e)</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="image">Img_Eq_FP</property>
+                            <signal name="clicked" handler="on_Bttn_Eq_FP_clicked" swapped="no"/>
                           </object>
                           <packing>
                             <property name="expand">True</property>
@@ -308,11 +341,13 @@ k = # compounding periods/cash flow period</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkLabel" id="Lbl_EqFP">
+                          <object class="GtkButton" id="Bttn_Eq_PF">
+                            <property name="label" translatable="yes">Bttn_Eq_PF</property>
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Compound Interest</property>
-                            <property name="label" translatable="yes">(F/P, i, N) = (1+i)^N -&gt; (F/P)</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="image">Img_Eq_PF</property>
+                            <signal name="clicked" handler="on_Bttn_Eq_PF_clicked" swapped="no"/>
                           </object>
                           <packing>
                             <property name="expand">True</property>
@@ -321,11 +356,13 @@ k = # compounding periods/cash flow period</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkLabel" id="Lbl_EqPF">
+                          <object class="GtkButton" id="Bttn_Eq_AF">
+                            <property name="label" translatable="yes">Bttn_Eq_AF</property>
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Present Worth</property>
-                            <property name="label" translatable="yes">(P/F, i, N) = 1/((1+i)^N) -&gt; (P/F)</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="image">Img_Eq_AF</property>
+                            <signal name="clicked" handler="on_Bttn_Eq_AF_clicked" swapped="no"/>
                           </object>
                           <packing>
                             <property name="expand">True</property>
@@ -334,11 +371,13 @@ k = # compounding periods/cash flow period</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkLabel" id="Lbl_EqAF">
+                          <object class="GtkButton" id="Bttn_Eq_FA">
+                            <property name="label" translatable="yes">Bttn_Eq_FA</property>
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Sinking Fund</property>
-                            <property name="label" translatable="yes">(A/F, i, N) = 1/(((1+i)^N)-1) -&gt; (A/F)</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="image">Img_Eq_FA</property>
+                            <signal name="clicked" handler="on_Bttn_Eq_FA_clicked" swapped="no"/>
                           </object>
                           <packing>
                             <property name="expand">True</property>
@@ -347,11 +386,13 @@ k = # compounding periods/cash flow period</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkLabel" id="Lbl_EqFA">
+                          <object class="GtkButton" id="Bttn_Eq_AP">
+                            <property name="label" translatable="yes">Bttn_Eq_AP</property>
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Compound Amount</property>
-                            <property name="label" translatable="yes">(F/A, i, N) = ((1+i)^N-1)/i -&gt; (F/A)</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="image">Img_Eq_AP</property>
+                            <signal name="clicked" handler="on_Bttn_Eq_AP_clicked" swapped="no"/>
                           </object>
                           <packing>
                             <property name="expand">True</property>
@@ -360,11 +401,13 @@ k = # compounding periods/cash flow period</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkLabel" id="Lbl_EqAP">
+                          <object class="GtkButton" id="Bttn_Eq_PA">
+                            <property name="label" translatable="yes">Bttn_Eq_PA</property>
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Capital Recovery</property>
-                            <property name="label" translatable="yes">(A/P, I, N) = (i*(1+i)^N)/((1+i)^N-1) -&gt; (A/P)</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="image">Img_Eq_PA</property>
+                            <signal name="clicked" handler="on_Bttn_Eq_PA_clicked" swapped="no"/>
                           </object>
                           <packing>
                             <property name="expand">True</property>
@@ -373,11 +416,13 @@ k = # compounding periods/cash flow period</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkLabel" id="Lbl_EqPA">
+                          <object class="GtkButton" id="Bttn_Eq_AG">
+                            <property name="label" translatable="yes">Bttn_Eq_AG</property>
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Series Present Worth</property>
-                            <property name="label" translatable="yes">(P/A, I, N) = ((1+i)^N-1)/(i*(1+i)^N) -&gt; (P/A)</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="image">Img_Eq_AG</property>
+                            <signal name="clicked" handler="on_Bttn_Eq_AG_clicked" swapped="no"/>
                           </object>
                           <packing>
                             <property name="expand">True</property>
@@ -386,11 +431,13 @@ k = # compounding periods/cash flow period</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkLabel" id="Lbl_EqAG">
+                          <object class="GtkButton" id="Bttn_Eq_PAg">
+                            <property name="label" translatable="yes">Bttn_Eq_Pg</property>
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Arithmetic Gradient</property>
-                            <property name="label" translatable="yes">(A/G, I, N) = ((1/i)-(N/((1+i)^N-1))) -&gt; (A/G)</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="image">Img_Eq_PAg</property>
+                            <signal name="clicked" handler="on_Bttn_Eq_PAg_clicked" swapped="no"/>
                           </object>
                           <packing>
                             <property name="expand">True</property>
@@ -399,11 +446,13 @@ k = # compounding periods/cash flow period</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkLabel" id="Lbl_EqPAg">
+                          <object class="GtkButton" id="Bttn_Eq_i_0">
+                            <property name="label" translatable="yes">Bttn_Eq_i_0</property>
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Geometric Gradient</property>
-                            <property name="label" translatable="yes">(P/A, g, I, N) = (((1+i_0)^N-1)/(i_0*(1+i_0)^N))*(1/(1+g)) -&gt; (P/A,g)</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="image">Img_Eq_i_0</property>
+                            <signal name="clicked" handler="on_Bttn_Eq_i_0_clicked" swapped="no"/>
                           </object>
                           <packing>
                             <property name="expand">True</property>
@@ -412,11 +461,13 @@ k = # compounding periods/cash flow period</property>
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkLabel" id="Lbl_Eqi_0">
+                          <object class="GtkButton" id="Bttn_Eq_i_e">
+                            <property name="label" translatable="yes">Bttn_Eq_i_e</property>
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Geometric Gradient</property>
-                            <property name="label" translatable="yes">(i_0) = ((1+i)/(1+g))-1 -&gt; (i_0)</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="image">Img_Eq_i_e</property>
+                            <signal name="clicked" handler="on_Bttn_Eq_i_e_clicked" swapped="no"/>
                           </object>
                           <packing>
                             <property name="expand">True</property>
@@ -700,7 +751,7 @@ k = # compounding periods/cash flow period</property>
                 <property name="receives_default">True</property>
                 <property name="has_tooltip">True</property>
                 <property name="relief">none</property>
-                <property name="uri">https://www.github.com/camca123/EconCalculator</property>
+                <property name="uri">http://www.google.com</property>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -717,5 +768,30 @@ k = # compounding periods/cash flow period</property>
         </child>
       </object>
     </child>
+  </object>
+  <object class="GtkImage" id="Img_Eq_PA">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">Eq_PA.png</property>
+  </object>
+  <object class="GtkImage" id="Img_Eq_PAg">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">Eq_PAg.png</property>
+  </object>
+  <object class="GtkImage" id="Img_Eq_PF">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">Eq_PF.png</property>
+  </object>
+  <object class="GtkImage" id="Img_Eq_i_0">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">Eq_i_0.png</property>
+  </object>
+  <object class="GtkImage" id="Img_Eq_i_e">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">Eq_i_e.png</property>
   </object>
 </interface>
