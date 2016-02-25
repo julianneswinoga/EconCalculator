@@ -50,18 +50,28 @@ class Formula:
         if (self.formulaText.find(varStr) != -1): # If we can still find the variable, we need to iterate again
             self.parseAgain = True
             
-    def evaluateFormula(self, equationNotation, actualEquation):        
+    def evaluateFormula(self, equationNotation, actualEquation):
+        print "Finding " + equationNotation
         start = self.formulaText.find("(" + equationNotation)
-        if (start == -1):
+        if (start == -1 or self.formulaText[start+1] != equationNotation[0]):
+            print "Not found"
             return
-        end = self.formulaText.find(")", start)        
+        brackets = 0
+        for i,c in enumerate(self.formulaText[start:]):
+            if (c == "("):
+                brackets += 1
+            elif (c == ")"):
+                brackets -= 1
+            if (brackets == 0):
+                end = i + start
+                break
         args = self.formulaText[start:end].split(",")
-
         self.formulaText = self.formulaText[:start] + actualEquation + self.formulaText[end+1:]
         
         for a, arg in enumerate(args[1:]): #Skip the first element because it's the equation
             self.formulaText = self.formulaText.replace("arg_"+str(a+1), str(arg).strip())
-            print "Replaced arg_"+str(a+1)+" with "+str(arg)
+            print "Replaced arg_"+str(a+1)+" with "+str(arg) + " in " + equationNotation
+            print ">>" + self.formulaText
     
     def replaceFormulas(self):
         self.evaluateFormula("i_0", "(((1+arg_1)/(1+arg_2))-1)")
