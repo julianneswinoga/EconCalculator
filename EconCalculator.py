@@ -51,14 +51,20 @@ class Formula:
         if (self.formulaText.find(varStr) != -1): # If we can still find the variable, we need to iterate again
             self.parseAgain = True
             
-    def evaluateFormula(self, equationNotation, actualEquation):
+    def evaluateFormula(self, equationNotation, actualEquation, argNumber):
         print "Finding " + equationNotation
         start = self.formulaText.find("(" + equationNotation)
         if (start == -1 or self.formulaText[start+1] != equationNotation[0]):
             print "Not found"
             return
         brackets = 0
+        args = []
+        tempstr = ""
         for i,c in enumerate(self.formulaText[start:]):
+            tempstr += c
+            if (c == "," and brackets == 1):
+                args.append(tempstr.strip(" ,"))
+                tempstr = ""
             if (c == "("):
                 brackets += 1
             elif (c == ")"):
@@ -66,25 +72,29 @@ class Formula:
             if (brackets == 0):
                 end = i + start
                 break
-        args = self.formulaText[start:end].split(",")
+        args.append(tempstr.strip(" ,)"))
+        if (len(args)-1 != argNumber):
+            print str(len(args)+1), ":", argNumber
+            return
         self.formulaText = self.formulaText[:start] + actualEquation + self.formulaText[end+1:]
         
         for a, arg in enumerate(args[1:]): #Skip the first element because it's the equation
+            print "PRE:", self.formulaText
             self.formulaText = self.formulaText.replace("arg_"+str(a+1), str(arg).strip())
             print "Replaced arg_"+str(a+1)+" with "+str(arg) + " in " + equationNotation
     
     def replaceFormulas(self):
-        self.evaluateFormula("i_0", "(((1+arg_1)/(1+arg_2))-1)")
-        self.evaluateFormula("i_e", "((1+(arg_1/arg_2))^arg_3-1)")
+        self.evaluateFormula("i_0", "(((1+arg_1)/(1+arg_2))-1)", 2)
+        self.evaluateFormula("i_e", "((1+(arg_1/arg_2))^arg_3-1)", 3)
         
-        self.evaluateFormula("F/P", "((1+arg_1)^arg_2)")
-        self.evaluateFormula("P/F", "(1/((1+arg_1)^arg_2))")
-        self.evaluateFormula("A/F", "(1/(((1+arg_1)^arg_1)-1))")
-        self.evaluateFormula("F/A", "(((1+arg_1)^arg_2-1)/arg_1)")
-        self.evaluateFormula("A/P", "((arg_1*(1+arg_1)^arg_2)/((1+arg_1)^arg_2-1))")
-        self.evaluateFormula("P/A", "(((1+arg_1)^arg_2-1)/(arg_1*(1+arg_1)^arg_2))")
-        self.evaluateFormula("A/G", "((1/arg_1)-(arg_2/((1+arg_1)^arg_2-1)))")
-        self.evaluateFormula("P/A", "((((1+(i_0))^arg_3-1)/((i_0)*(1+(i_0))^arg_3))*(1/(1+arg_1)))")
+        self.evaluateFormula("F/P", "((1+arg_1)^arg_2)", 2)
+        self.evaluateFormula("P/F", "(1/((1+arg_1)^arg_2))", 2)
+        self.evaluateFormula("A/F", "(1/(((1+arg_1)^arg_1)-1))", 2)
+        self.evaluateFormula("F/A", "(((1+arg_1)^arg_2-1)/arg_1)", 2)
+        self.evaluateFormula("A/P", "((arg_1*(1+arg_1)^arg_2)/((1+arg_1)^arg_2-1))", 2)
+        self.evaluateFormula("P/A", "(((1+arg_1)^arg_2-1)/(arg_1*(1+arg_1)^arg_2))", 2)
+        self.evaluateFormula("A/G", "((1/arg_1)-(arg_2/((1+arg_1)^arg_2-1)))", 2)
+        self.evaluateFormula("P/A", "((((1+(arg_2))^arg_3-1)/((arg_2)*(1+(arg_2))^arg_3))*(1/(1+arg_1)))", 3)
         
     def parseFormula(self):
         preFormula = self.formulaText
@@ -213,7 +223,7 @@ class EngEconWindow:
         self.formulaButtonClicked("(A/G, i, N)")
 
     def on_Bttn_Eq_PAg_clicked(self, object, data=None):
-        self.formulaButtonClicked("(P/A, g, i, N)")
+        self.formulaButtonClicked("(P/A, g, (i_0, i, g), N)")
 
     def on_Bttn_Eq_i_0_clicked(self, object, data=None):
         self.formulaButtonClicked("(i_0, i, g)")
