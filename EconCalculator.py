@@ -20,6 +20,7 @@ class Formula:
         
     def clearAll(self):
         self.P = ""
+        self.F = ""
         self.i = ""
         self.N = ""
         self.r = ""
@@ -71,7 +72,6 @@ class Formula:
         for a, arg in enumerate(args[1:]): #Skip the first element because it's the equation
             self.formulaText = self.formulaText.replace("arg_"+str(a+1), str(arg).strip())
             print "Replaced arg_"+str(a+1)+" with "+str(arg) + " in " + equationNotation
-            print ">>" + self.formulaText
     
     def replaceFormulas(self):
         self.evaluateFormula("i_0", "(((1+arg_1)/(1+arg_2))-1)")
@@ -95,6 +95,7 @@ class Formula:
             preFormula = self.formulaText
             self.parseAgain = False
             self.parseVariable(self.P, "P")
+            self.parseVariable(self.F, "F")
             self.parseVariable(self.i, "i")
             self.parseVariable(self.r, "r")
             self.parseVariable(self.m, "m")
@@ -161,6 +162,7 @@ class EngEconWindow:
 
     def on_BttnGenFormula_clicked(self, object, data=None):
         currFormula.P = self.builder.get_object("Txt_VarP").get_text()
+        currFormula.F = self.builder.get_object("Txt_VarF").get_text()
         currFormula.i = self.builder.get_object("Txt_Vari").get_text()
         currFormula.r = self.builder.get_object("Txt_Varr").get_text()
         currFormula.m = self.builder.get_object("Txt_Varm").get_text()
@@ -174,6 +176,7 @@ class EngEconWindow:
     
     def on_BttnClearVars_clicked(self, object, data=None):
         self.builder.get_object("Txt_VarP").set_text("")
+        self.builder.get_object("Txt_VarF").set_text("")
         self.builder.get_object("Txt_Vari").set_text("")
         self.builder.get_object("Txt_Varr").set_text("")
         self.builder.get_object("Txt_Varm").set_text("")
