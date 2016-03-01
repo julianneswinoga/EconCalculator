@@ -89,7 +89,7 @@ class Formula:
         
         self.evaluateFormula("F/P", "((1+arg_1)^arg_2)", 2)
         self.evaluateFormula("P/F", "(1/((1+arg_1)^arg_2))", 2)
-        self.evaluateFormula("A/F", "(1/(((1+arg_1)^arg_1)-1))", 2)
+        self.evaluateFormula("A/F", "(arg_1/(((1+arg_1)^arg_2)-1))", 2)
         self.evaluateFormula("F/A", "(((1+arg_1)^arg_2-1)/arg_1)", 2)
         self.evaluateFormula("A/P", "((arg_1*(1+arg_1)^arg_2)/((1+arg_1)^arg_2-1))", 2)
         self.evaluateFormula("P/A", "(((1+arg_1)^arg_2-1)/(arg_1*(1+arg_1)^arg_2))", 2)
